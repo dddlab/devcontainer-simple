@@ -1,49 +1,28 @@
 {
-    "name": "my-awesome-project",
+    "name": "devcontainer-simple",
     "build": {
         "dockerfile": "Dockerfile"
     },
 
+    // Keep default container launch command
     "overrideCommand": false,
 
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/jovyan/work,type=bind", 
     "workspaceFolder": "/home/jovyan/work",
 
-    //"runArgs": [
-    //    "--env=GEN_CERT=yes",
-    //    "--user=1000:100",
-    //    "--name=my-awesome-project", // needs to be unique
-    //    "--hostname=my-awesome-project_container" // needs to be unique
-    //],
-
     "forwardPorts": [8888],
     "portsAttributes": {
         "8888": {
-            // Naming the Jupyterlab port
-            "label": "Jupyterlab",
-            // Disable autoforwarding of ports (by default, only 8888 is necessary)
-            //"onAutoForward": "ignore"
+            "label": "Jupyterlab"
         }
     },
 
     "customizations": {
         "vscode": {
             "settings": {
-                "python.defaultInterpreterPath": "/opt/conda/bin/python",
-                //"r.rterm.linux": "/opt/conda/bin/radian",
-                //"r.bracketedPaste": true,
-                //"r.plot.useHttpgd": true
+                "python.defaultInterpreterPath": "/opt/conda/bin/python"
             },
-            "extensions": [
-                //"ms-python.python",             // for Python
-                //"ms-toolsai.jupyter",           // for Python
-                //"ms-toolsai.jupyter-keymap",    // for Python
-                //"quarto.quarto",                // for Python and R
-                //"reditorsupport.r",             // for R
-                //"RDebugger.r-debugger",         // for R
-                //"ms-vscode.live-server",
-                //"analytic-signal.preview-pdf"
-            ]
+            "extensions": []
         }
     }
 }
