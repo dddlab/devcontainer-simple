@@ -1,4 +1,3 @@
-
 FROM quay.io/jupyter/datascience-notebook:r-4.3.1
 
 ### Environment variables
@@ -16,8 +15,8 @@ RUN apt-get update && \
         lmodern \
         file \
         curl \
-        g++ \
-        tmux \
+        # g++ \
+        # tmux \
         # Dependencies for RStudio
         psmisc \
         lsb-release \
@@ -25,21 +24,15 @@ RUN apt-get update && \
         libclang-dev \
         libpq5 \
         libtiff-dev \
-        ###################################################
-        ### Add your own system dependencies installed  ###
-        ### with `apt-get` as needed below this comment ###
-        ### Example (note the backslash after name):    ###
-        ### neofetch \                                  ###
-        ###################################################
         && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 ### R compiler settings
-RUN R -e "dotR <- file.path(Sys.getenv('HOME'), '.R'); if(!file.exists(dotR)){ dir.create(dotR) }; Makevars <- file.path(dotR, 'Makevars'); if (!file.exists(Makevars)){  file.create(Makevars) }; cat('\nCXX14FLAGS=-O3 -fPIC -Wno-unused-variable -Wno-unused-function', 'CXX14 = g++ -std=c++1y -fPIC', 'CXX = g++', 'CXX11 = g++', file = Makevars, sep = '\n', append = TRUE)"
+# RUN R -e "dotR <- file.path(Sys.getenv('HOME'), '.R'); if(!file.exists(dotR)){ dir.create(dotR) }; Makevars <- file.path(dotR, 'Makevars'); if (!file.exists(Makevars)){  file.create(Makevars) }; cat('\nCXX14FLAGS=-O3 -fPIC -Wno-unused-variable -Wno-unused-function', 'CXX14 = g++ -std=c++1y -fPIC', 'CXX = g++', 'CXX11 = g++', file = Makevars, sep = '\n', append = TRUE)"
 
 ### CRAN mirror
-RUN R -e "dotRprofile <- file.path(Sys.getenv('HOME'), '.Rprofile'); if(!file.exists(dotRprofile)){ file.create(dotRprofile) }; cat('local({r <- getOption(\"repos\")', 'r[\"CRAN\"] <- \"https://cloud.r-project.org\"', 'options(repos=r)', '})', file = dotRprofile, sep = '\n', append = TRUE)"
+# RUN R -e "dotRprofile <- file.path(Sys.getenv('HOME'), '.Rprofile'); if(!file.exists(dotRprofile)){ file.create(dotRprofile) }; cat('local({r <- getOption(\"repos\")', 'r[\"CRAN\"] <- \"https://cloud.r-project.org\"', 'options(repos=r)', '})', file = dotRprofile, sep = '\n', append = TRUE)"
 
 ### RStudio from source
 RUN wget -q https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${R_STUDIO_VERSION}-amd64.deb && \
@@ -57,7 +50,6 @@ USER ${NB_USER}
 ### Anaconda (conda/mamba) packages
 RUN mamba install -y -c conda-forge --freeze-installed \
         # Jupyter setup
-        jupyter-server-proxy=4.1.0 \
         jupyter-rsession-proxy=2.2.0 \
         #######################################################
         ### Add your own conda dependencies installed with  ###
@@ -69,32 +61,16 @@ RUN mamba install -y -c conda-forge --freeze-installed \
     mamba clean --all
 
 ### PyPI (pip) packages
-RUN pip install \ 
-        nbgitpuller \
-        radian==0.6.11 \
-        ################################################
-        ### Add your own PyPI dependencies installed ###
-        ### with `pip` as needed below this comment  ###
-        ### Example (note the backslash after name): ###
-        ### scikit-ntk \                             ###
-        ################################################
-        && \
-    jupyter labextension enable nbgitpuller
+# RUN pip install \ 
+#         radian==0.6.11
 
 ### R packages
     # Versioned
-RUN R -q -e 'remotes::install_version("markdown", version="1.12", repos="cloud.r-project.org", Ncpus=8)' && \
-    R -q -e 'remotes::install_version("languageserver", version="0.3.16", repos="cloud.r-project.org", Ncpus=8)' && \
-    R -q -e 'remotes::install_version("httpgd", version="2.0.1", repos="cloud.r-project.org", Ncpus=8)' && \
-    # Latest Dev Versions
-    R -q -e 'remotes::install_github("ManuelHentschel/vscDebugger", Ncpus=8)' && \
-    ##########################################################
-    ### Add your own R dependencies installed as needed    ###
-    ### below this comment but before `echo`.              ###
-    ### Example (note the `&& \` after the command):       ###
-    ### R -q -e 'install.packages("dplyr")' && \           ###
-    ##########################################################
-    echo
+# RUN R -q -e 'remotes::install_version("markdown", version="1.12", repos="cloud.r-project.org")' && \
+#     R -q -e 'remotes::install_version("languageserver", version="0.3.16", repos="cloud.r-project.org")' && \
+#     R -q -e 'remotes::install_version("httpgd", version="2.0.1", repos="cloud.r-project.org")' && \
+#     # Latest Dev Versions
+#     R -q -e 'remotes::install_github("ManuelHentschel/vscDebugger")'
 
 ### Prints Jupyter server token when terminal is opened
 RUN echo "echo \"Jupyter server token: \$(jupyter server list 2>&1 | grep -oP '(?<=token=)[[:alnum:]]*')\"" > ${HOME}/.get-jupyter-url.sh && \
