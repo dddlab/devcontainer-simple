@@ -2,6 +2,5 @@
     "name": "devcontainer-ubuntu",
     "build": {
         "dockerfile": "Dockerfile"
-    },
-    "workspaceFolder": "/workspaces/devcontainer-simple/"
+    }
 }
