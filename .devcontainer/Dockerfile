@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/datascience-notebook:r-4.3.1
+FROM quay.io/jupyter/datascience-notebook:r-4.3.3
 
 ### Environment variables
 # ENV R_STUDIO_VERSION 2023.12.1-402
