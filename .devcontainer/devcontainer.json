@@ -1,28 +1,8 @@
 {
-    "name": "devcontainer-simple",
+    "name": "devcontainer-ubuntu",
     "build": {
         "dockerfile": "Dockerfile"
     },
-
-    // Keep default container launch command
-    "overrideCommand": false,
-
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/jovyan/work,type=bind", 
-    "workspaceFolder": "/home/jovyan/work",
-
-    // "forwardPorts": [8888],
-    // "portsAttributes": {
-    //     "8888": {
-    //         "label": "Jupyterlab"
-    //     }
-    // },
-
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "python.defaultInterpreterPath": "/opt/conda/bin/python"
-            },
-            "extensions": []
-        }
-    }
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces,type=bind,consistency=cached",
+    "workspaceFolder": "/workspaces"
 }
