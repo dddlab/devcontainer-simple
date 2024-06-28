@@ -1,6 +1,5 @@
 {
-    "name": "devcontainer-ubuntu",
-    "build": {
-        "dockerfile": "Dockerfile"
-    }
+  "dockerFile": "Dockerfile",
+  "containerEnv": 
+        { "TMPDIR": "/tmp" }
 }

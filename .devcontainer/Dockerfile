@@ -1,4 +1,5 @@
-FROM ubuntu:22.04
+FROM docker.io/ubuntu:22.04
 
-RUN apt-get update && \
-    apt-get install -y git
+# git package installation
+RUN apt update && \
+    apt install -y git g++
