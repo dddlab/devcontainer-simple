@@ -2,11 +2,10 @@ FROM quay.io/jupyter/datascience-notebook:r-4.3.3
 
 USER root
 
-ENV R_STUDIO_VERSION 2023.12.1-402
-
 ### RStudio system dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        lmodern \
         psmisc lsb-release libssl-dev \
         libclang-dev libpq5 libtiff-dev \
         && \
@@ -14,8 +13,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 ### RStudio server
-ARG R_STUDIO_URL="https://download2.rstudio.org/server/jammy/amd64"
-RUN wget -q "${R_STUDIO_URL}/rstudio-server-${R_STUDIO_VERSION}-amd64.deb" && \
+ARG RSTUDIO_VER=2023.12.1-402
+ARG RSTUDIO_URL=https://download2.rstudio.org/server/jammy/amd64
+RUN wget -q ${RSTUDIO_URL}/rstudio-server-${RSTUDIO_VER}-amd64.deb && \
     apt-get install -yq --no-install-recommends ./rstudio*.deb && \
     rm -f ./rstudio*.deb && \
     apt-get clean && \
