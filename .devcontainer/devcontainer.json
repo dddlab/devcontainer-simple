@@ -1,8 +1,5 @@
 {
-    "name": "devcontainer-simple",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
+    "dockerFile": "Dockerfile",
 
     // Keep default container launch command
     "overrideCommand": false,
